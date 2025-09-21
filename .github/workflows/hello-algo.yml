@@ -1,0 +1,36 @@
+name: hello-algo
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+env:
+  FORK_REPOSITORY: 'zhijieFork/hello-algo'
+  UPSTREAM_REPOSITORY: 'https://github.com/krahets/hello-algo.git'
+  TARGET_BRANCH: 'main'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.FORK_REPOSITORY }}
+          ref: ${{ env.TARGET_BRANCH }}
+          token: ${{ secrets.PAT }}
+
+      - name: Configure git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync with upstream
+        run: |
+          git remote add upstream ${{ env.UPSTREAM_REPOSITORY }} || true
+          git fetch upstream
+          git checkout ${{ env.TARGET_BRANCH }}
+          git merge upstream/${{ env.TARGET_BRANCH }} --allow-unrelated-histories
+          git push origin ${{ env.TARGET_BRANCH }}
