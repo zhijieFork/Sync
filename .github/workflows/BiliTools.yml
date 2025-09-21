@@ -5,10 +5,6 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:
 
-env:
-  FORK_REPOSITORY: 'zhijieFork/BiliTools'
-  UPSTREAM_REPOSITORY: 'https://github.com/btjawa/BiliTools.git'
-
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -17,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.FORK_REPOSITORY }}
+          repository: 'zhijieFork/BiliTools'
           ref: 'main'
           token: ${{ secrets.PAT }}
 
@@ -28,7 +24,7 @@ jobs:
 
       - name: Sync with upstream
         run: |
-          git remote add upstream ${{ env.UPSTREAM_REPOSITORY }} || true
+          git remote add upstream https://github.com/btjawa/BiliTools.git || true
           git fetch upstream
           git checkout main
           git merge upstream/main --allow-unrelated-histories
