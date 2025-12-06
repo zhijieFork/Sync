@@ -7,7 +7,7 @@ on:
 
 env:
   FORK_REPOSITORY: 'zhijieFork/transformers.js'
-  UPSTREAM_REPOSITORY: 'git@github.com:huggingface/transformers.js.git'
+  UPSTREAM_REPOSITORY: 'https://github.com/huggingface/transformers.js.git'
   TARGET_BRANCH: 'main'
 
 jobs:
